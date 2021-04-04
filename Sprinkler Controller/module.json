@@ -1,0 +1,12 @@
+{
+    "id": "{30ACC359-FC9C-D6D6-4C75-38317145240D}",
+    "name": "Sprinkler Controller",
+    "type": 3,
+    "vendor": "elueckel",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "SC",
+    "url": ""
+}

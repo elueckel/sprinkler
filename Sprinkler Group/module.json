@@ -1,0 +1,12 @@
+{
+    "id": "{A9ED2BBB-07F0-5260-D202-7EFA35FD3182}",
+    "name": "Sprinkler Group",
+    "type": 3,
+    "vendor": "elueckel",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "SG",
+    "url": ""
+}
