@@ -1,5 +1,524 @@
 {
-    "elements": [],
-    "actions": [],
+    "elements": 
+    [
+        {
+            "type": "ExpansionPanel",
+            "caption": "Sprinkler Group",
+            "items": [
+                {
+                    "type": "ValidationTextBox",
+                    "name": "GroupName",
+                    "caption": "Name of the Sprinkler Group"
+                },
+                {
+                    "type": "Label",
+                    "label": "It is possible to control a sprinkler group externally, e.g. if it rain or rain is incoming."
+                },
+                {
+                    "type": "Label",
+                    "label": "Controlling the group can happen via the Sprinkler Controller or any other system providing a boolean variable."
+                },
+                {
+                    "type": "SelectVariable",
+                    "name": "ControllerVariable",
+                    "caption": "Controller ID"
+                },
+                {
+                    "type": "Label",
+                    "label": "Notifications"
+                },
+                {
+                    "type": "Label",
+                    "label": "Notification via App requires symcon app and configured webfront"
+                },
+                {
+                    "type": "RowLayout",
+                    "items": [
+                        {
+                            "type": "CheckBox",
+                            "name": "Notification",
+                            "caption": "Notifications"
+                        },
+                        {
+                            "type": "CheckBox",
+                            "name": "WriteToLog",
+                            "caption": "Logging"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "Master Valves",
+            "items": [
+                {
+                    "type": "Label",
+                    "label": "A master valve can be used infront of irrigation strings and will be opened first and closed last"
+                }, 
+                {
+                    "type": "CheckBox",
+                    "name": "MasterValveActive",
+                    "caption": "Active"
+                },
+                {
+                    "type": "List",
+                    "name": "MasterValveGroup",
+                    "caption": "Master Valves",
+                    "rowCount": 5,
+                    "add": true,
+                    "delete": true,
+                    "columns": [
+                        {
+                            "caption": "InstanceID",
+                            "name": "InstanceID",
+                            "width": "auto",
+                            "add": 0,
+                            "edit": {
+                                "type": "SelectVariable"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "String 1",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "String1Active",
+                    "caption": "Active"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "String1Time",
+                    "caption": "Duration",
+                    "suffix": "min",
+                    "minimum": "0",
+                    "maximum": "180"
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "String1Name",
+                    "caption": "Name of the string"
+                },
+                {
+                    "type": "List",
+                    "name": "String1ValveGroup",
+                    "caption": "Sting 1 Valve Group",
+                    "rowCount": 5,
+                    "add": true,
+                    "delete": true,
+                    "columns": [
+                        {
+                            "caption": "InstanceID",
+                            "name": "InstanceID",
+                            "width": "auto",
+                            "add": 0,
+                            "edit": {
+                                "type": "SelectVariable"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "String 2",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "String2Active",
+                    "caption": "Active"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "String2Time",
+                    "caption": "Duration",
+                    "suffix": "min",
+                    "minimum": "0",
+                    "maximum": "180"
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "String2Name",
+                    "caption": "Name of the string"
+                },
+                {
+                    "type": "List",
+                    "name": "String2ValveGroup",
+                    "caption": "Sting 2 Valve Group",
+                    "rowCount": 5,
+                    "add": true,
+                    "delete": true,
+                    "columns": [
+                        {
+                            "caption": "InstanceID",
+                            "name": "InstanceID",
+                            "width": "auto",
+                            "add": 0,
+                            "edit": {
+                                "type": "SelectVariable"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "String 3",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "String3Active",
+                    "caption": "Active"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "String3Time",
+                    "caption": "Duration",
+                    "suffix": "min",
+                    "minimum": "0",
+                    "maximum": "180"
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "String3Name",
+                    "caption": "Name of the string"
+                },
+                {
+                    "type": "List",
+                    "name": "String3ValveGroup",
+                    "caption": "Sting 3 Valve Group",
+                    "rowCount": 5,
+                    "add": true,
+                    "delete": true,
+                    "columns": [
+                        {
+                            "caption": "InstanceID",
+                            "name": "InstanceID",
+                            "width": "auto",
+                            "add": 0,
+                            "edit": {
+                                "type": "SelectVariable"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "String 4",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "String4Active",
+                    "caption": "Active"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "String4Time",
+                    "caption": "Duration",
+                    "suffix": "min",
+                    "minimum": "0",
+                    "maximum": "180"
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "String4Name",
+                    "caption": "Name of the string"
+                },
+                {
+                    "type": "List",
+                    "name": "String4ValveGroup",
+                    "caption": "Sting 4 Valve Group",
+                    "rowCount": 5,
+                    "add": true,
+                    "delete": true,
+                    "columns": [
+                        {
+                            "caption": "InstanceID",
+                            "name": "InstanceID",
+                            "width": "auto",
+                            "add": 0,
+                            "edit": {
+                                "type": "SelectVariable"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "String 5",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "String5Active",
+                    "caption": "Active"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "String5Time",
+                    "caption": "Duration",
+                    "suffix": "min",
+                    "minimum": "0",
+                    "maximum": "180"
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "String5Name",
+                    "caption": "Name of the string"
+                },
+                {
+                    "type": "List",
+                    "name": "String5ValveGroup",
+                    "caption": "Sting 5 Valve Group",
+                    "rowCount": 5,
+                    "add": true,
+                    "delete": true,
+                    "columns": [
+                        {
+                            "caption": "InstanceID",
+                            "name": "InstanceID",
+                            "width": "auto",
+                            "add": 0,
+                            "edit": {
+                                "type": "SelectVariable"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "String 6",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "String6Active",
+                    "caption": "Active"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "String1Time",
+                    "caption": "Duration",
+                    "suffix": "min",
+                    "minimum": "0",
+                    "maximum": "180"
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "String6Name",
+                    "caption": "Name of the string"
+                },
+                {
+                    "type": "List",
+                    "name": "String6ValveGroup",
+                    "caption": "Sting 6 Valve Group",
+                    "rowCount": 5,
+                    "add": true,
+                    "delete": true,
+                    "columns": [
+                        {
+                            "caption": "InstanceID",
+                            "name": "InstanceID",
+                            "width": "auto",
+                            "add": 0,
+                            "edit": {
+                                "type": "SelectVariable"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "String 7",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "String7Active",
+                    "caption": "Active"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "String1Time",
+                    "caption": "Duration",
+                    "suffix": "min",
+                    "minimum": "0",
+                    "maximum": "180"
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "String7Name",
+                    "caption": "Name of the string"
+                },
+                {
+                    "type": "List",
+                    "name": "String7ValveGroup",
+                    "caption": "Sting 7 Valve Group",
+                    "rowCount": 5,
+                    "add": true,
+                    "delete": true,
+                    "columns": [
+                        {
+                            "caption": "InstanceID",
+                            "name": "InstanceID",
+                            "width": "auto",
+                            "add": 0,
+                            "edit": {
+                                "type": "SelectVariable"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "String 8",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "String8Active",
+                    "caption": "Active"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "String8Time",
+                    "caption": "Duration",
+                    "suffix": "min",
+                    "minimum": "0",
+                    "maximum": "180"
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "String8Name",
+                    "caption": "Name of the string"
+                },
+                {
+                    "type": "List",
+                    "name": "String8ValveGroup",
+                    "caption": "Sting 8 Valve Group",
+                    "rowCount": 5,
+                    "add": true,
+                    "delete": true,
+                    "columns": [
+                        {
+                            "caption": "InstanceID",
+                            "name": "InstanceID",
+                            "width": "auto",
+                            "add": 0,
+                            "edit": {
+                                "type": "SelectVariable"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "String 9",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "String9Active",
+                    "caption": "Active"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "String1Time",
+                    "caption": "Duration",
+                    "suffix": "min",
+                    "minimum": "0",
+                    "maximum": "180"
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "String9Name",
+                    "caption": "Name of the string"
+                },
+                {
+                    "type": "List",
+                    "name": "String9ValveGroup",
+                    "caption": "Sting 9 Valve Group",
+                    "rowCount": 5,
+                    "add": true,
+                    "delete": true,
+                    "columns": [
+                        {
+                            "caption": "InstanceID",
+                            "name": "InstanceID",
+                            "width": "auto",
+                            "add": 0,
+                            "edit": {
+                                "type": "SelectVariable"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "String 10",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "String10Active",
+                    "caption": "Active"
+                },
+                {
+                    "type": "NumberSpinner",
+                    "name": "String10Time",
+                    "caption": "Duration",
+                    "suffix": "min",
+                    "minimum": "0",
+                    "maximum": "180"
+                },
+                {
+                    "type": "ValidationTextBox",
+                    "name": "String10Name",
+                    "caption": "Name of the string"
+                },
+                {
+                    "type": "List",
+                    "name": "String10ValveGroup",
+                    "caption": "Sting 10 Valve Group",
+                    "rowCount": 5,
+                    "add": true,
+                    "delete": true,
+                    "columns": [
+                        {
+                            "caption": "InstanceID",
+                            "name": "InstanceID",
+                            "width": "auto",
+                            "add": 0,
+                            "edit": {
+                                "type": "SelectVariable"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "Button",
+            "label": "Test Group",
+            "onClick": "SG_SprinklerOperation($id);"
+        }
+    ],
     "status": []
 }
