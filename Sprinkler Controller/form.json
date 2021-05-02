@@ -1,5 +1,78 @@
 {
-    "elements": [],
-    "actions": [],
+    "elements": [
+        { "type": "CheckBox", "name": "ComponentActive", "caption": "Active" },
+		{
+			"type": "ExpansionPanel",
+			"caption": "Base Configuration",
+			"items": [
+				{ "type": "Label", "label": "Weather Data (being used to control irrigation)" },
+				{ "type": "Label", "label": "Outside Data" },
+				{ "type": "RowLayout",
+					"items": [
+						{ "type": "SelectVariable", "name": "SensorTemperature", "caption": "Temperature" },
+						{ "type": "SelectVariable", "name": "SensorHumidity", "caption": "Humidity" },
+						{ "type": "SelectVariable", "name": "SensorWind", "caption": "Wind Sensor" }
+					]
+				},
+				{ "type": "Label", "label": "Soil Data" },
+				{ "type": "RowLayout",
+					"items": [
+						{ "type": "SelectVariable", "name": "SensorSoilHumidity", "caption": "Soil Humidity" }
+					]
+				},
+				{ "type": "Label", "label": "Rain Data" },
+				{ "type": "RowLayout",
+					"items": [
+						{ "type": "SelectVariable", "name": "SensorRain", "caption": "Rain Sensor" },
+						{ "type": "SelectVariable", "name": "SensorRainAmount", "caption": "Rain Amount" },
+						{ "type": "SelectVariable", "name": "InformationRainInXDays", "caption": "Rain Forecast" }
+					]
+				},
+				{ "type": "Label", "label": "Weather forecasts and rain amounts can be retrieved via the Wunderground Module" },
+				{ "type": "Label", "label": "Wunderground PWS Sync & Forecast Module" },
+				{ "type": "Label", "label": "Notifications" },
+				{ "type": "Label", "label": "Notification via App requires symcon app and configured webfront" },				
+				{ "type": "RowLayout",
+					"items": [
+						{ "type": "CheckBox", "name": "Notification",  "caption": "Notifications" },
+						{ "type": "CheckBox", "name": "WriteToLog",  "caption": "Logging" }
+					]
+				}
+			]
+		},
+		{
+			"type": "ExpansionPanel",
+			"caption": "Estimate Drought",
+			"items": [
+				{ "name": "MethodToEstimateDryout", "type": "Select", "caption": "MethodToEstimateDryout",
+					"options": [
+						{ "label": "Soil Humidity", "value": "1" },
+						{ "label": "Evaporation - Inactive", "value": "2" }
+						]
+				},
+				{ "type": "Label", "label": "Drought Thresholds when using humidity sensors (when is the lawn dry)" },
+				{ "type": "RowLayout",
+					"items": [
+						{ "type": "NumberSpinner", "name": "EstimateDryoutDryingThreshold", "caption": "Drying Threshold", "suffix": "cb", "minimum": "0", "maximum": "200" },
+						{ "type": "NumberSpinner", "name": "EstimateDryoutDryThreshold", "caption": "Dry Threshold", "suffix": "cb", "minimum": "0", "maximum": "200" }
+					]
+				},
+				{ "type": "Label", "label": "Rain Thresholds (how much rain is needed to water the lawn)" },
+				{ "type": "RowLayout",
+					"items": [
+						{ "type": "NumberSpinner", "name": "RainInXDaysMinimumDryingOutThreshold", "caption": "Drying out Threshold", "suffix": "mm", "minimum": "0", "maximum": "200" },
+						{ "type": "NumberSpinner", "name": "RainInXDaysMinimumDryThreshold", "caption": "Dry Threshold", "suffix": "mm", "minimum": "0", "maximum": "200" }
+					]
+				},
+				{ "type": "Label", "label": "Rain Data (current rain will stop irrigation / future rain as well)" },
+				{ "type": "Label", "label": "The amount of rain being needed to stop irrigation depends on humidy threshold" }
+			]
+		}
+    ],
+    "actions": [
+        { "type": "Button", "label": "Test Estimate Humidity", "onClick": "IC_EstimateSoilWetness($id);" },
+		{ "type": "Button", "label": "Test Evapotranspiration Calculation", "onClick": "IC_Evapotranspiration($id);" },
+		{ "type": "Button", "label": "Test Rain in last hour", "onClick": "IC_RainInLastHour($id);" }
+    ],
     "status": []
 }
