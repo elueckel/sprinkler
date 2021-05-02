@@ -7,7 +7,8 @@ declare(strict_types=1);
 		{
 			//Never delete this line!
 			parent::Create();
-			
+
+			$this->RegisterPropertyBoolean("ComponentActive", 0);
 			$this->RegisterPropertyInteger("SensorRain",0);
 			$this->RegisterPropertyBoolean("RainStopsIrrigation", 0);
 			$this->RegisterPropertyInteger("SensorRainAmount",0);
@@ -26,6 +27,7 @@ declare(strict_types=1);
 			$this->RegisterPropertyInteger("SensorSoilHumidity", 0);
 			$this->RegisterPropertyInteger("EstimateDryoutDryingThreshold", 20);
 			$this->RegisterPropertyInteger("EstimateDryoutDryThreshold", 50);
+			$this->RegisterPropertyInteger("Group1AutomaticActivationThresholdHumidity", 0);
 
 			$this->RegisterPropertyInteger("RainInXDaysMinimumDryingOutThreshold", 15);
 			$this->RegisterPropertyInteger("RainInXDaysMinimumDryThreshold", 40);
@@ -37,92 +39,92 @@ declare(strict_types=1);
 			$this->RegisterTimer('Watchdog', 0, 'SC_Watchdog($_IPS["TARGET"]);'); //Timer to monitor things and perform frequent tasks
 			$this->RegisterTimer('Evapotranspiration', 0, 'SC_Evapotranspiration($_IPS["TARGET"]);'); //Timer to monitor soil humidity and collect weather data
 
-			if (IPS_VariableProfileExists("IC.SoilHumidity") == false) {
-				IPS_CreateVariableProfile("IC.SoilHumidity", 1);
-				IPS_SetVariableProfileIcon("IC.SoilHumidity", "Drops");
-				IPS_SetVariableProfileAssociation("IC.SoilHumidity", 0, $this->Translate("Wet"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.SoilHumidity", 1, $this->Translate("Drying Out"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.SoilHumidity", 2, $this->Translate("Dry"), "", -1);
+			if (IPS_VariableProfileExists("SC.SoilHumidity") == false) {
+				IPS_CreateVariableProfile("SC.SoilHumidity", 1);
+				IPS_SetVariableProfileIcon("SC.SoilHumidity", "Drops");
+				IPS_SetVariableProfileAssociation("SC.SoilHumidity", 0, $this->Translate("Wet"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.SoilHumidity", 1, $this->Translate("Drying Out"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.SoilHumidity", 2, $this->Translate("Dry"), "", -1);
 			}
 	
-			if (IPS_VariableProfileExists("IC.CurrentStatus") == false) {
-				IPS_CreateVariableProfile("IC.CurrentStatus", 1);
-				IPS_SetVariableProfileIcon("IC.CurrentStatus", "Gear");
-				IPS_SetVariableProfileAssociation("IC.CurrentStatus", 0, $this->Translate("Inactive"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.CurrentStatus", 1, $this->Translate("Running Automatically"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.CurrentStatus", 2, $this->Translate("Running Manually"), "", -1);
+			if (IPS_VariableProfileExists("SC.CurrentStatus") == false) {
+				IPS_CreateVariableProfile("SC.CurrentStatus", 1);
+				IPS_SetVariableProfileIcon("SC.CurrentStatus", "Gear");
+				IPS_SetVariableProfileAssociation("SC.CurrentStatus", 0, $this->Translate("Inactive"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.CurrentStatus", 1, $this->Translate("Running Automatically"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.CurrentStatus", 2, $this->Translate("Running Manually"), "", -1);
 			}
 	
-			if (IPS_VariableProfileExists("IC.ManualGroup") == false) {
-				IPS_CreateVariableProfile("IC.ManualGroup", 1);
-				IPS_SetVariableProfileIcon("IC.ManualGroup", "Gear");
-				IPS_SetVariableProfileAssociation("IC.ManualGroup", 1, $this->Translate("Group 1"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualGroup", 2, $this->Translate("Group 2"), "", -1);
+			if (IPS_VariableProfileExists("SC.ManualGroup") == false) {
+				IPS_CreateVariableProfile("SC.ManualGroup", 1);
+				IPS_SetVariableProfileIcon("SC.ManualGroup", "Gear");
+				IPS_SetVariableProfileAssociation("SC.ManualGroup", 1, $this->Translate("Group 1"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualGroup", 2, $this->Translate("Group 2"), "", -1);
 			}
 			
-			if (IPS_VariableProfileExists("IC.StringRun") == false) {
-				IPS_CreateVariableProfile("IC.StringRun", 1);
-				IPS_SetVariableProfileIcon("IC.StringRun", "Gear");
-				IPS_SetVariableProfileAssociation("IC.StringRun", 0, $this->Translate("No"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.StringRun", 1, $this->Translate("Yes"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.StringRun", 2, $this->Translate("Runnig"), "", -1);
+			if (IPS_VariableProfileExists("SC.StringRun") == false) {
+				IPS_CreateVariableProfile("SC.StringRun", 1);
+				IPS_SetVariableProfileIcon("SC.StringRun", "Gear");
+				IPS_SetVariableProfileAssociation("SC.StringRun", 0, $this->Translate("No"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.StringRun", 1, $this->Translate("Yes"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.StringRun", 2, $this->Translate("Runnig"), "", -1);
 			}
 			
-			if (IPS_VariableProfileExists("IC.MasterValve") == false) {
-				IPS_CreateVariableProfile("IC.MasterValve", 0);
-				IPS_SetVariableProfileIcon("IC.MasterValve", "Drops");
-				IPS_SetVariableProfileAssociation("IC.MasterValve", 0, $this->Translate("Closed"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.MasterValve", 1, $this->Translate("Open"), "", -1);
+			if (IPS_VariableProfileExists("SC.MasterValve") == false) {
+				IPS_CreateVariableProfile("SC.MasterValve", 0);
+				IPS_SetVariableProfileIcon("SC.MasterValve", "Drops");
+				IPS_SetVariableProfileAssociation("SC.MasterValve", 0, $this->Translate("Closed"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.MasterValve", 1, $this->Translate("Open"), "", -1);
 			}
 	
 	
-			if (IPS_VariableProfileExists("IC.GroupAutomaticActivation") == false) {
-				IPS_CreateVariableProfile("IC.GroupAutomaticActivation", 1);
-				IPS_SetVariableProfileIcon("IC.GroupAutomaticActivation", "Robot");
-				IPS_SetVariableProfileAssociation("IC.GroupAutomaticActivation", 0, $this->Translate("No Automation"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.GroupAutomaticActivation", 1, $this->Translate("Auto Enabled"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.GroupAutomaticActivation", 2, $this->Translate("Auto Disabled"), "", -1);
+			if (IPS_VariableProfileExists("SC.GroupAutomaticActivation") == false) {
+				IPS_CreateVariableProfile("SC.GroupAutomaticActivation", 1);
+				IPS_SetVariableProfileIcon("SC.GroupAutomaticActivation", "Robot");
+				IPS_SetVariableProfileAssociation("SC.GroupAutomaticActivation", 0, $this->Translate("No Automation"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.GroupAutomaticActivation", 1, $this->Translate("Auto Enabled"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.GroupAutomaticActivation", 2, $this->Translate("Auto Disabled"), "", -1);
 			}
 	
-			if (IPS_VariableProfileExists("IC.ManualString") == false) {
-				IPS_CreateVariableProfile("IC.ManualString", 1);
-				IPS_SetVariableProfileIcon("IC.ManualString", "Gear");
-				IPS_SetVariableProfileAssociation("IC.ManualString", 0, $this->Translate("Alle Strings"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 1, $this->Translate("String 1"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 2, $this->Translate("String 2"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 3, $this->Translate("String 3"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 4, $this->Translate("String 4"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 5, $this->Translate("String 5"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 6, $this->Translate("String 6"), "", -1);
+			if (IPS_VariableProfileExists("SC.ManualString") == false) {
+				IPS_CreateVariableProfile("SC.ManualString", 1);
+				IPS_SetVariableProfileIcon("SC.ManualString", "Gear");
+				IPS_SetVariableProfileAssociation("SC.ManualString", 0, $this->Translate("Alle Strings"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 1, $this->Translate("String 1"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 2, $this->Translate("String 2"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 3, $this->Translate("String 3"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 4, $this->Translate("String 4"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 5, $this->Translate("String 5"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 6, $this->Translate("String 6"), "", -1);
 			}
 			
-			if (IPS_VariableProfileExists("IC.Timer") == false) {
-				IPS_CreateVariableProfile("IC.Timer", 1);
-				IPS_SetVariableProfileIcon("IC.Timer", "Clock");
-				IPS_SetVariableProfileDigits("IC.Timer", 0);
-				IPS_SetVariableProfileValues("IC.Timer", 0, 60, 1);
+			if (IPS_VariableProfileExists("SC.Timer") == false) {
+				IPS_CreateVariableProfile("SC.Timer", 1);
+				IPS_SetVariableProfileIcon("SC.Timer", "Clock");
+				IPS_SetVariableProfileDigits("SC.Timer", 0);
+				IPS_SetVariableProfileValues("SC.Timer", 0, 60, 1);
 			}
 	
 			//$this->RegisterVariableBoolean('ManualActivationSprinkler', $this->Translate('WF Manual Sprinkler Activation'),"~Switch");		
-			//$this->RegisterVariableInteger('ManualActivationRunTime', $this->Translate('WF Manual Sprinkler Runtime'),"IC.Timer");
-			//$this->RegisterVariableInteger('ManualActivationGroup', $this->Translate('WF Manual Sprinkler Group'),"IC.ManualGroup");
-			//$this->RegisterVariableInteger('ManualActivationString', $this->Translate('WF Manual Sprinkler String'),"IC.ManualString");
+			//$this->RegisterVariableInteger('ManualActivationRunTime', $this->Translate('WF Manual Sprinkler Runtime'),"SC.Timer");
+			//$this->RegisterVariableInteger('ManualActivationGroup', $this->Translate('WF Manual Sprinkler Group'),"SC.ManualGroup");
+			//$this->RegisterVariableInteger('ManualActivationString', $this->Translate('WF Manual Sprinkler String'),"SC.ManualString");
 			//$this->RegisterVariableBoolean('ManualBlockSprinkler', $this->Translate('WF Manual Sprinkler Block'),"~Switch");
-			$this->RegisterVariableInteger('Group1CurrentStatus', $this->Translate('Group 1 Current Status'),"IC.CurrentStatus");
+			$this->RegisterVariableInteger('Group1CurrentStatus', $this->Translate('Group 1 Current Status'),"SC.CurrentStatus");
 			$this->RegisterVariableBoolean('CurrentRainBlockIrrigation', $this->Translate('Irrigation blocked by rain'), "~Switch");
-			//$this->RegisterVariableInteger('Group1AutomaticActivation', $this->Translate('Group 1 Automation'),"IC.GroupAutomaticActivation");				
-			$this->RegisterVariableInteger('SoilHumidity', $this->Translate('Soil Humidity'), "IC.SoilHumidity");
+			//$this->RegisterVariableInteger('Group1AutomaticActivation', $this->Translate('Group 1 Automation'),"SC.GroupAutomaticActivation");				
+			$this->RegisterVariableInteger('SoilHumidity', $this->Translate('Soil Humidity'), "SC.SoilHumidity");
 			$this->RegisterVariableFloat('Evapotranspiration', $this->Translate('Evapotranspiration Grass'),"~Rainfall");
 			//$this->RegisterVariableString('SprinklerDescisionText', $this->Translate('Sprinkler Descision Text'));	
 			//$this->RegisterVariableInteger('Group1CurrentString', $this->Translate('Group 1 Current String'));
-			//$this->RegisterVariableBoolean('Group1MasterValve1', $this->Translate('Group 1 Master Valve 1'),"IC.MasterValve");
-			//$this->RegisterVariableBoolean('Group1MasterValve2', $this->Translate('Group 1 Master Valve 2'),"IC.MasterValve");
-			//$this->RegisterVariableInteger('Group1String1HasRun', $this->Translate('Group 1 String 1 Has Run'),"IC.StringRun");
-			//$this->RegisterVariableInteger('Group1String2HasRun', $this->Translate('Group 1 String 2 Has Run'),"IC.StringRun");
-			//$this->RegisterVariableInteger('Group1String3HasRun', $this->Translate('Group 1 String 3 Has Run'),"IC.StringRun");
-			//$this->RegisterVariableInteger('Group1String4HasRun', $this->Translate('Group 1 String 4 Has Run'),"IC.StringRun");
-			//$this->RegisterVariableInteger('Group1String5HasRun', $this->Translate('Group 1 String 5 Has Run'),"IC.StringRun");					
-			//$this->RegisterVariableInteger('Group1String6HasRun', $this->Translate('Group 1 String 6 Has Run'),"IC.StringRun");
+			//$this->RegisterVariableBoolean('Group1MasterValve1', $this->Translate('Group 1 Master Valve 1'),"SC.MasterValve");
+			//$this->RegisterVariableBoolean('Group1MasterValve2', $this->Translate('Group 1 Master Valve 2'),"SC.MasterValve");
+			//$this->RegisterVariableInteger('Group1String1HasRun', $this->Translate('Group 1 String 1 Has Run'),"SC.StringRun");
+			//$this->RegisterVariableInteger('Group1String2HasRun', $this->Translate('Group 1 String 2 Has Run'),"SC.StringRun");
+			//$this->RegisterVariableInteger('Group1String3HasRun', $this->Translate('Group 1 String 3 Has Run'),"SC.StringRun");
+			//$this->RegisterVariableInteger('Group1String4HasRun', $this->Translate('Group 1 String 4 Has Run'),"SC.StringRun");
+			//$this->RegisterVariableInteger('Group1String5HasRun', $this->Translate('Group 1 String 5 Has Run'),"SC.StringRun");					
+			//$this->RegisterVariableInteger('Group1String6HasRun', $this->Translate('Group 1 String 6 Has Run'),"SC.StringRun");
 			
 		}
 
@@ -138,7 +140,6 @@ declare(strict_types=1);
 			parent::ApplyChanges();
 
 			$ComponentActive = $this->ReadPropertyBoolean("ComponentActive");
-			$CurrentString = GetValue($this->GetIDForIdent("Group1CurrentString"));
 
 			if ($ComponentActive == 1) {
 				$this->SetTimerInterval("Watchdog",10000);
@@ -157,8 +158,6 @@ declare(strict_types=1);
 				$this->SetTimerInterval("Watchdog",0);
 				$this->SetTimerInterval("Evapotranspiration",0);
 			}
-
-			$this->SetResetTimerInterval();
 
 		}
 
@@ -380,41 +379,7 @@ declare(strict_types=1);
 			}
 	
 		}
-		
-	
-		//function sets timer for Group1 
-		//******************************
-	
-		public function SetResetTimerInterval() {
-			$Group1Active = $this->ReadPropertyBoolean("Group1Active");
-	
-			if ($Group1Active == 1) {
-				$Hour = $this->ReadPropertyInteger("Group1NumberStartHour");
-				$Minute = $this->ReadPropertyInteger("Group1NumberStartMinute");
-				$Group1ExecutionInterval = $this->ReadPropertyInteger("Group1ExecutionInterval");
-				$NewTime = $Hour.":".$Minute;
-				$now = new DateTime();
-				$target = new DateTime();
-				if ($NewTime < date("H:i")) {
-					$target->modify('+1 day');
-				}
-				if ($Group1ExecutionInterval == 1) {
-					$target->modify('+'.$Group1ExecutionInterval.' day');
-				}
-				if ($Group1ExecutionInterval > 1) {
-					$target->modify('+'.$Group1ExecutionInterval.' days');
-				}
-				$target->setTime($Hour, $Minute, 0);
-				$diff = $target->getTimestamp() - $now->getTimestamp();
-				$Group1Timer = $diff * 1000;
-				$this->SetTimerInterval('SprinklerOperationGroup1', $Group1Timer);
-			}
-			else if ($Group1Active == 0) {
-				$this->SetTimerInterval('SprinklerOperationGroup1', 0);
-			}
-		} 
-	
-	
+			
 		//function check how dry the soil is
 		//**********************************
 	

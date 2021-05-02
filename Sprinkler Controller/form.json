@@ -70,9 +70,9 @@
 		}
     ],
     "actions": [
-        { "type": "Button", "label": "Test Estimate Humidity", "onClick": "IC_EstimateSoilWetness($id);" },
-		{ "type": "Button", "label": "Test Evapotranspiration Calculation", "onClick": "IC_Evapotranspiration($id);" },
-		{ "type": "Button", "label": "Test Rain in last hour", "onClick": "IC_RainInLastHour($id);" }
+        { "type": "Button", "label": "Test Estimate Humidity", "onClick": "SC_EstimateSoilWetness($id);" },
+		{ "type": "Button", "label": "Test Evapotranspiration Calculation", "onClick": "SC_Evapotranspiration($id);" },
+		{ "type": "Button", "label": "Test Rain in last hour", "onClick": "SC_RainInLastHour($id);" }
     ],
     "status": []
 }
