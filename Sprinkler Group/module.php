@@ -8,19 +8,81 @@ declare(strict_types=1);
 			//Never delete this line!
 			parent::Create();
 
+			if (IPS_VariableProfileExists("SC.CurrentStatus") == false) {
+				IPS_CreateVariableProfile("SC.CurrentStatus", 1);
+				IPS_SetVariableProfileIcon("SC.CurrentStatus", "Gear");
+				IPS_SetVariableProfileAssociation("SC.CurrentStatus", 0, $this->Translate("Inactive"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.CurrentStatus", 1, $this->Translate("Running Automatically"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.CurrentStatus", 2, $this->Translate("Running Manually"), "", -1);
+			}
+
+			if (IPS_VariableProfileExists("SC.StringRun") == false) {
+				IPS_CreateVariableProfile("SC.StringRun", 1);
+				IPS_SetVariableProfileIcon("SC.StringRun", "Gear");
+				IPS_SetVariableProfileAssociation("SC.StringRun", 0, $this->Translate("No"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.StringRun", 1, $this->Translate("Yes"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.StringRun", 2, $this->Translate("Runnig"), "", -1);
+			}
+			
+			if (IPS_VariableProfileExists("SC.MasterValve") == false) {
+				IPS_CreateVariableProfile("SC.MasterValve", 0);
+				IPS_SetVariableProfileIcon("SC.MasterValve", "Drops");
+				IPS_SetVariableProfileAssociation("SC.MasterValve", 0, $this->Translate("Closed"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.MasterValve", 1, $this->Translate("Open"), "", -1);
+			}
+
+			if (IPS_VariableProfileExists("SC.GroupAutomaticActivation") == false) {
+				IPS_CreateVariableProfile("SC.GroupAutomaticActivation", 1);
+				IPS_SetVariableProfileIcon("SC.GroupAutomaticActivation", "Robot");
+				IPS_SetVariableProfileAssociation("SC.GroupAutomaticActivation", 0, $this->Translate("Manual"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.GroupAutomaticActivation", 1, $this->Translate("Group Timer"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.GroupAutomaticActivation", 2, $this->Translate("Group Timer + Controller"), "", -1);
+			}
+
+			if (IPS_VariableProfileExists("SC.GroupBlock") == false) {
+				IPS_CreateVariableProfile("SC.GroupBlock", 1);
+				IPS_SetVariableProfileIcon("SC.GroupBlock", "Robot");
+				IPS_SetVariableProfileAssociation("SC.GroupBlock", 0, $this->Translate("No Block"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.GroupBlock", 1, $this->Translate("Blocked Manually"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.GroupBlock", 2, $this->Translate("Blocked by Controller"), "", -1);
+			}
+
+			if (IPS_VariableProfileExists("SC.ManualString") == false) {
+				IPS_CreateVariableProfile("SC.ManualString", 1);
+				IPS_SetVariableProfileIcon("SC.ManualString", "Gear");
+				IPS_SetVariableProfileAssociation("SC.ManualString", 0, $this->Translate("Alle Strings"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 1, $this->Translate("String 1"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 2, $this->Translate("String 2"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 3, $this->Translate("String 3"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 4, $this->Translate("String 4"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 5, $this->Translate("String 5"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 6, $this->Translate("String 6"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 6, $this->Translate("String 7"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 6, $this->Translate("String 8"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 6, $this->Translate("String 9"), "", -1);
+				IPS_SetVariableProfileAssociation("SC.ManualString", 6, $this->Translate("String 10"), "", -1);
+			}
+			
+			if (IPS_VariableProfileExists("SC.Timer") == false) {
+				IPS_CreateVariableProfile("SC.Timer", 1);
+				IPS_SetVariableProfileIcon("SC.Timer", "Clock");
+				IPS_SetVariableProfileDigits("SC.Timer", 0);
+				IPS_SetVariableProfileValues("SC.Timer", 0, 60, 1);
+			}
+
 			$i = 10;
 
 			$this->RegisterVariableBoolean('GroupActive', $this->Translate('Group Active'), "~Switch", $i++);
-			$this->RegisterVariableInteger('AutomaticActivation', $this->Translate('Group Operation Mode'),"IC.GroupAutomaticActivation", $i++);
+			$this->RegisterVariableInteger('AutomaticActivation', $this->Translate('Group Operation Mode'),"SC.GroupAutomaticActivation", $i++);
 			$this->RegisterVariableInteger('StartTime', $this->Translate('Auto Starttime'), "~UnixTimestampTime", $i++);
 			SetValue($this->GetIDForIdent("StartTime"), "1619380800");
 			$this->RegisterVariableInteger('Interval', $this->Translate('Auto Interval'),'',$i++);
 			SetValue($this->GetIDForIdent("Interval"), "2");
-			$this->RegisterVariableInteger('CurrentStatus', $this->Translate('Current Status'),"IC.CurrentStatus", $i++);
-			$this->RegisterVariableBoolean('ManualBlock', $this->Translate('Block or Stop Sprinkler'),'IC.GroupBlock',$i++);
+			$this->RegisterVariableInteger('CurrentStatus', $this->Translate('Current Status'),"SC.CurrentStatus", $i++);
+			$this->RegisterVariableInteger('ManualBlock', $this->Translate('Block or Stop Sprinkler'),'SC.GroupBlock',$i++);
 			
 			$this->RegisterPropertyString('GroupName', 'Sprinkler Group');
-			$this->RegisterPropertyInteger('ControllerVariable');
+			$this->RegisterPropertyInteger("ControllerVariable",0);
 			$this->RegisterPropertyBoolean("WriteToLog",0);
 			$this->RegisterPropertyBoolean("Notification",0);
 
@@ -78,87 +140,26 @@ declare(strict_types=1);
 			$this->RegisterPropertyString("String10ValveGroup", 0); 
 			$this->RegisterPropertyString("String10Name", "String 10");
 
-			if (IPS_VariableProfileExists("IC.CurrentStatus") == false) {
-			IPS_CreateVariableProfile("IC.CurrentStatus", 1);
-			IPS_SetVariableProfileIcon("IC.CurrentStatus", "Gear");
-			IPS_SetVariableProfileAssociation("IC.CurrentStatus", 0, $this->Translate("Inactive"), "", -1);
-			IPS_SetVariableProfileAssociation("IC.CurrentStatus", 1, $this->Translate("Running Automatically"), "", -1);
-			IPS_SetVariableProfileAssociation("IC.CurrentStatus", 2, $this->Translate("Running Manually"), "", -1);
-			}
-
-			if (IPS_VariableProfileExists("IC.StringRun") == false) {
-				IPS_CreateVariableProfile("IC.StringRun", 1);
-				IPS_SetVariableProfileIcon("IC.StringRun", "Gear");
-				IPS_SetVariableProfileAssociation("IC.StringRun", 0, $this->Translate("No"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.StringRun", 1, $this->Translate("Yes"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.StringRun", 2, $this->Translate("Runnig"), "", -1);
-			}
-			
-			if (IPS_VariableProfileExists("IC.MasterValve") == false) {
-				IPS_CreateVariableProfile("IC.MasterValve", 0);
-				IPS_SetVariableProfileIcon("IC.MasterValve", "Drops");
-				IPS_SetVariableProfileAssociation("IC.MasterValve", 0, $this->Translate("Closed"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.MasterValve", 1, $this->Translate("Open"), "", -1);
-			}
-
-			if (IPS_VariableProfileExists("IC.GroupAutomaticActivation") == false) {
-				IPS_CreateVariableProfile("IC.GroupAutomaticActivation", 1);
-				IPS_SetVariableProfileIcon("IC.GroupAutomaticActivation", "Robot");
-				IPS_SetVariableProfileAssociation("IC.GroupAutomaticActivation", 0, $this->Translate("Manual"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.GroupAutomaticActivation", 1, $this->Translate("Group Timer"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.GroupAutomaticActivation", 2, $this->Translate("Group Timer + Controller"), "", -1);
-			}
-
-			if (IPS_VariableProfileExists("IC.GroupBlock") == false) {
-				IPS_CreateVariableProfile("IC.GroupBlock", 1);
-				IPS_SetVariableProfileIcon("IC.GroupBlock", "Robot");
-				IPS_SetVariableProfileAssociation("IC.GroupBlock", 0, $this->Translate("No Block"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.GroupBlock", 1, $this->Translate("Blocked Manually"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.GroupBlock", 2, $this->Translate("Blocked by Controller"), "", -1);
-			}
-
-			if (IPS_VariableProfileExists("IC.ManualString") == false) {
-				IPS_CreateVariableProfile("IC.ManualString", 1);
-				IPS_SetVariableProfileIcon("IC.ManualString", "Gear");
-				IPS_SetVariableProfileAssociation("IC.ManualString", 0, $this->Translate("Alle Strings"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 1, $this->Translate("String 1"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 2, $this->Translate("String 2"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 3, $this->Translate("String 3"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 4, $this->Translate("String 4"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 5, $this->Translate("String 5"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 6, $this->Translate("String 6"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 6, $this->Translate("String 7"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 6, $this->Translate("String 8"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 6, $this->Translate("String 9"), "", -1);
-				IPS_SetVariableProfileAssociation("IC.ManualString", 6, $this->Translate("String 10"), "", -1);
-			}
-			
-			if (IPS_VariableProfileExists("IC.Timer") == false) {
-				IPS_CreateVariableProfile("IC.Timer", 1);
-				IPS_SetVariableProfileIcon("IC.Timer", "Clock");
-				IPS_SetVariableProfileDigits("IC.Timer", 0);
-				IPS_SetVariableProfileValues("IC.Timer", 0, 60, 1);
-			}
-
 			$i = 80;
 
 			$this->RegisterVariableBoolean('ManualActivationSprinkler', $this->Translate('WF Manual Sprinkler Activation'),"~Switch", $i++);		
-			$this->RegisterVariableInteger('ManualActivationRunTime', $this->Translate('WF Manual Sprinkler Runtime'),"IC.Timer", $i++);
-			$this->RegisterVariableInteger('ManualActivationString', $this->Translate('WF Manual Sprinkler String'),"IC.ManualString", $i++);
+			$this->RegisterVariableInteger('ManualActivationRunTime', $this->Translate('WF Manual Sprinkler Runtime'),"SC.Timer", $i++);
+			$this->RegisterVariableInteger('ManualActivationString', $this->Translate('WF Manual Sprinkler String'),"SC.ManualString", $i++);
 			//$this->RegisterVariableBoolean('ManualBlockSprinkler', $this->Translate('WF Manual Sprinkler Block'),"~Switch");
 						
 			$i = 100;
 			$this->RegisterVariableInteger('CurrentString', $this->Translate('Current String'),"",$i++);
-			$this->RegisterVariableInteger('String1HasRun', $this->Translate('String 1 Has Run'),"IC.StringRun", $i++);
-			$this->RegisterVariableInteger('String2HasRun', $this->Translate('String 2 Has Run'),"IC.StringRun", $i++);
-			$this->RegisterVariableInteger('String3HasRun', $this->Translate('String 3 Has Run'),"IC.StringRun", $i++);
-			$this->RegisterVariableInteger('String4HasRun', $this->Translate('String 4 Has Run'),"IC.StringRun", $i++);
-			$this->RegisterVariableInteger('String5HasRun', $this->Translate('String 5 Has Run'),"IC.StringRun", $i++);					
-			$this->RegisterVariableInteger('String6HasRun', $this->Translate('String 6 Has Run'),"IC.StringRun", $i++);
-			$this->RegisterVariableInteger('String7HasRun', $this->Translate('String 7 Has Run'),"IC.StringRun", $i++);
-			$this->RegisterVariableInteger('String8HasRun', $this->Translate('String 8 Has Run'),"IC.StringRun", $i++);
-			$this->RegisterVariableInteger('String9HasRun', $this->Translate('String 9 Has Run'),"IC.StringRun", $i++);
-			$this->RegisterVariableInteger('String10HasRun', $this->Translate('String 10 Has Run'),"IC.StringRun", $i++);
+			$this->RegisterVariableInteger('CurrentStringRuntime', $this->Translate('Current String Runtime'),"",$i++);
+			$this->RegisterVariableInteger('String1HasRun', $this->Translate('String 1 Has Run'),"SC.StringRun", $i++);
+			$this->RegisterVariableInteger('String2HasRun', $this->Translate('String 2 Has Run'),"SC.StringRun", $i++);
+			$this->RegisterVariableInteger('String3HasRun', $this->Translate('String 3 Has Run'),"SC.StringRun", $i++);
+			$this->RegisterVariableInteger('String4HasRun', $this->Translate('String 4 Has Run'),"SC.StringRun", $i++);
+			$this->RegisterVariableInteger('String5HasRun', $this->Translate('String 5 Has Run'),"SC.StringRun", $i++);					
+			$this->RegisterVariableInteger('String6HasRun', $this->Translate('String 6 Has Run'),"SC.StringRun", $i++);
+			$this->RegisterVariableInteger('String7HasRun', $this->Translate('String 7 Has Run'),"SC.StringRun", $i++);
+			$this->RegisterVariableInteger('String8HasRun', $this->Translate('String 8 Has Run'),"SC.StringRun", $i++);
+			$this->RegisterVariableInteger('String9HasRun', $this->Translate('String 9 Has Run'),"SC.StringRun", $i++);
+			$this->RegisterVariableInteger('String10HasRun', $this->Translate('String 10 Has Run'),"SC.StringRun", $i++);
 
 
 			//timer stuff
@@ -170,8 +171,7 @@ declare(strict_types=1);
 			$this->RegisterTimer('SprinklerOperation', 0, 'SG_SprinklerOperation($_IPS["TARGET"]);'); //Test
 			//$this->RegisterTimer('Watchdog', 0, 'IC_Watchdog($_IPS["TARGET"]);'); //Timer to monitor things and perform frequent tasks
 			$this->RegisterTimer('SprinklerStringStop', 0, 'SG_SprinklerStringStop($_IPS["TARGET"]);'); //Timer stopping Irrigation
-
-
+			$this->RegisterTimer('CurrentStringRuntime', 0, 'SG_CurrentStringRuntime($_IPS["TARGET"]);');
 
 		}
 
@@ -217,9 +217,8 @@ declare(strict_types=1);
 					$this->RegisterMessage($AutomaticActivationID, VM_UPDATE);
 			}
 
-			$ControllerVariableSet = GetValue($this->GetIDForIdent("ControllerVariable"));
-			if (isset($ControllerVariableSet)) {
-				$ControllerVariableID = @IPS_GetObjectIDByIdent("ControllerVariable", $this->InstanceID);	
+			If ($this->ReadPropertyInteger("ControllerVariable") != "") {
+				$ControllerVariableID = $this->ReadPropertyInteger("ControllerVariable"); 
 				if (IPS_GetObject($ControllerVariableID)['ObjectType'] == 2) {
 						$this->RegisterMessage($ControllerVariableID, VM_UPDATE);
 				}
@@ -318,17 +317,22 @@ declare(strict_types=1);
 					
 				}
 			}
+			
+			elseif ($SenderID == $this->ReadPropertyInteger("ControllerVariable")/*$this->GetIDForIdent("ControllerVariable")*/) {
 
-			elseif ($SenderID == $this->GetIDForIdent("ControllerVariable")) {
+				$ControllerStatus = GetValue($this->ReadPropertyInteger("ControllerVariable"));
 
-				$ControllerStatus = GetValue($this->GetIDForIdent("ControllerVariable"));
-
-				if ($ControllerStatus == 0) {
+				if ($ControllerStatus == 0) { //Deaktiviert
 					// Aus
 				}
-				elseif ($ControllerStatus == 1) {
+				elseif ($ControllerStatus == 1) { //An
 					//An
-				} 
+				}
+				elseif ($ControllerStatus == 2) { //Pausiert
+					//An
+				}
+				
+				$this->SendDebug($this->Translate('Controller Status'),$ControllerStatus,0); 
 
 			}
 
@@ -442,13 +446,13 @@ declare(strict_types=1);
 
 			$i = 0;
 			
-			foreach ($arrMasterValves as $valves) {
-				$i++;
-				$valve = $valves->InstanceID;
-				RequestAction($valve, true);	
+			if (isset($arrMasterValves)) {
+				foreach ($arrMasterValves as $valves) {
+					$i++;
+					$valve = $valves->InstanceID;
+					RequestAction($valve, true);	
+				}
 			}
-
-
 
 			switch ($CurrentString) {
 				case 0:
@@ -465,6 +469,9 @@ declare(strict_types=1);
 					SetValue($this->GetIDForIdent("String8HasRun"), 0);
 					SetValue($this->GetIDForIdent("String9HasRun"), 0);
 					SetValue($this->GetIDForIdent("String10HasRun"), 0);
+					SetValue($this->GetIDForIdent("CurrentStringRuntime"), 0);
+					$this->SetTimerInterval("CurrentStringRuntime",0);
+					
 					
 					$this->SendDebug($this->Translate('Group 1'),$this->Translate('Master Valves closed'),0);
 					$arrStringMasterValves = $this->ReadPropertyString("MasterValveGroup");
@@ -472,12 +479,13 @@ declare(strict_types=1);
 
 					$i = 0;
 					
-					foreach ($arrMasterValves as $valves) {
-						$i++;
-						$valve = $valves->InstanceID;
-						RequestAction($valve, false);
+					if (isset($arrMasterValves)) {
+						foreach ($arrMasterValves as $valves) {
+							$i++;
+							$valve = $valves->InstanceID;
+							RequestAction($valve, false);
+						}
 					}
-
 					
 					SetValue($this->GetIDForIdent("CurrentString"), 0);
 					SetValue($this->GetIDForIdent("ManualActivationSprinkler"), 0);
@@ -644,6 +652,7 @@ declare(strict_types=1);
 			SetValue($this->GetIDForIdent("String9HasRun"), 0);
 			SetValue($this->GetIDForIdent("String10HasRun"), 0);
 			SetValue($this->GetIDForIdent("CurrentString"), 0);
+			SetValue($this->GetIDForIdent("CurrentStringRuntime"), 0);
 			$this->SendDebug($this->Translate('Group 1'),$this->Translate('F2'),0);
 		}
 
@@ -678,14 +687,44 @@ declare(strict_types=1);
 			$this->SendDebug($this->Translate('Group 1'),$this->Translate('Automatic Timer: '.$StringTime.' for String '.$CurrentString.' with Name '.$CurrentStringName),0);
 			$StringRunTime = $StringTime * 60000;
 			SetValue($this->GetIDForIdent("CurrentStatus"), 1);
+			SetValue($this->GetIDForIdent("CurrentStringRuntime"), $StringTime);
+			$this->SetTimerInterval("CurrentStringRuntime",60000);
 			$this->SetTimerInterval("SprinklerStringStop",$StringRunTime);
 		}
 		else if ($ActivationManual == 1) {
 			$this->SendDebug($this->Translate('Group 1'),$this->Translate('Manual Timer: '.$StringTime.' for String '.$CurrentString.' with Name '.$CurrentStringName),0);
 			$StringRunTime = $ActivationManualTimer * 60000;
 			SetValue($this->GetIDForIdent("CurrentStatus"), 2);
+			SetValue($this->GetIDForIdent("CurrentStringRuntime"), $ActivationManualTimer);
+			$this->SetTimerInterval("CurrentStringRuntime",60000);
 			$this->SetTimerInterval("SprinklerStringStop",$StringRunTime);
 		}
+
+	}
+
+	public function CurrentStringRuntime() {
+		//function counts down the time the sprinkler has run to enable a restart at a given time		
+		$CurrentTime = GetValue($this->GetIDForIdent("CurrentStringRuntime"));
+
+		$NewCurrentTime = $CurrentTime - 1;
+
+		SetValue($this->GetIDForIdent("CurrentStringRuntime"), $NewCurrentTime);
+	}
+
+	public function SprinklerStringPause() {
+
+		//1. Schliesse aktuell Ventile
+		//2. Setze Current Runtime nicht zurück
+		//3. Timer anhalten
+
+	}
+
+	public function SprinklerStringContinue() {
+
+		//1. Prüfe ob noch weiter bewässert werden muss - Rückmeldung vom Controller
+		//2. Hole aktuelle Zeit / aktuellen String
+		//3. Reaktivere Timer basierend auf timer
+		// Wenn nicht manueller Stop auslösen und der dann alles zurücksetzt
 
 	}
 
